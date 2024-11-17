@@ -430,6 +430,7 @@ body.nav-active {
 .navbar-link:is(:hover, :focus-visible, .active) {transform: translateX(10px);}
 
 .header-action {
+  margin-top: -100px;
   margin-block-start: auto;
   margin-block-end: 80px;
   padding-block-start: 20px;
