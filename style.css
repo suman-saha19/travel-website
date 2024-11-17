@@ -431,7 +431,7 @@ body.nav-active {
 
 .header-action {
   margin-block-start: auto;
-  margin-block-end: 20px;
+  margin-block-end: 40px;
   padding-block-start: 20px;
   border-block-start: 1px solid var(--border-gainsboro);
   display: flex;
