@@ -61,24 +61,29 @@
                         <a href="#" class="navbar-link active">Home</a>
                     </li>
                     <li class="navbar-item">
-                        <a href="#" class="navbar-link">About</a>
+                        <a href="#about" class="navbar-link">About</a>
                     </li>
                     <li class="navbar-item">
-                        <a href="#" class="navbar-link">Services</a>
+                        <a href="#services" class="navbar-link">Services</a>
                     </li>
                     <li class="navbar-item">
-                        <a href="#" class="navbar-link">Pricing</a>
+                        <a href="#pricing " class="navbar-link">Pricing</a>
                     </li>
                     <li class="navbar-item">
-                        <a href="#" class="navbar-link">Contact</a>
+                        <a href="#contact" class="navbar-link">Contact</a>
                     </li>
                 </ul>
 
-                <div class="header-action">
-                    <a href="#" class="login-btn">Login</a>
+                <!-- <div class="header-action">
+                    <a href="login.html" class="login-btn">Login</a>
 
-                    <a href="#" class="btn btn-primary">Sign Up</a>
+                    <a href="signup.html" class="btn btn-primary">Sign Up</a>
+                </div> -->
+                <div class="header-action">
+                    <button class="login-btn" onclick="openPopup('loginPopup')">Login</button>
+                    <button class="btn btn-primary" onclick="openPopup('signupPopup')">Sign Up</button>
                 </div>
+
             </nav>
 
             <button class="nav-toggle-btn" aria-label="open menu" data-nav-toggler>
@@ -89,6 +94,120 @@
 
         </div>
     </header>
+
+
+    <!-- start -->
+    <!-- login -->
+    <div id="loginPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('loginPopup')">&times;</span>
+            <h1>Welcome Back!</h1>
+            <form id="loginForm" onsubmit="login(event)">
+                <label for="login-email">Email Address</label>
+                <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
+
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+
+                <button type="submit">Log In</button>
+            </form>
+            <p>Don't have an account? <a href="#" onclick="openPopup('signupPopup')">Sign Up</a></p>
+        </div>
+    </div>
+
+    <!-- Signup -->
+    <div id="signupPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('signupPopup')">&times;</span>
+            <h1>Create an Account</h1>
+            <form id="signupForm" onsubmit="signup(event)">
+                <label for="signup-name">Full Name</label>
+                <input type="text" id="signup-name" name="name" placeholder="Enter your name" required>
+
+                <label for="signup-email">Email Address</label>
+                <input type="email" id="signup-email" name="email" placeholder="Enter your email" required>
+
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" name="password" placeholder="Enter a secure password"
+                    required>
+
+                <button type="submit">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="#" onclick="openPopup('loginPopup')">Log In</a></p>
+        </div>
+    </div>
+
+    <script>
+        function openPopup(popupId) {
+            document.getElementById(popupId).style.display = "flex";
+        }
+
+        function closePopup(popupId) {
+            document.getElementById(popupId).style.display = "none";
+        }
+
+        function signup(event) {
+            event.preventDefault();
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const user = {
+                name: name,
+                email: email,
+                password: password
+            };
+            localStorage.setItem('user', JSON.stringify(user));
+            alert('Account created successfully!');
+            closePopup('signupPopup');
+        }
+
+        function login(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+            if (storedUser && storedUser.email === email && storedUser.password === password) {
+                alert('Login successful!');
+                const expiryTime = Date.now() + 5 * 60 * 1000;
+                localStorage.setItem('loggedInUser', JSON.stringify({ name: storedUser.name, expiry: expiryTime }));
+                closePopup('loginPopup');
+                displayWelcomeMessage();
+            } else {
+                alert('Invalid email or password!');
+            }
+        }
+
+        function displayWelcomeMessage() {
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (loggedInUser && Date.now() < loggedInUser.expiry) {
+                document.getElementById('welcomeMessage').textContent = `Welcome, ${loggedInUser.name}!`;
+                setTimeout(logout, loggedInUser.expiry - Date.now());
+            } else {
+                document.getElementById('welcomeMessage').textContent = '';
+                logout();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            document.getElementById('welcomeMessage').textContent = '';
+        }
+
+        function checkSession() {
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (loggedInUser && Date.now() < loggedInUser.expiry) {
+                displayWelcomeMessage();
+            } else {
+                logout();
+            }
+        }
+
+        window.onload = function () {
+            checkSession();
+        }
+    </script>
+
+    <!-- end -->
 
     <main>
         <article>
@@ -109,6 +228,9 @@
                         </p>
 
                         <h1 class="h1 title hero-title">
+                            <div id="welcomeMessage" style="font-size: 40px;"></div>
+                            <!-- To display the logged-in user's name -->
+
                             It's a Big World There, Go Explore
                         </h1>
 
@@ -143,8 +265,10 @@
                     </div>
 
                     <figure class="hero-banner">
-                        <img src="./images/hero-banner.png" width="631" height="735" alt="hero banner" class="w-100" >
+                        <img src="./images/hero-banner.png" width="631" height="735" alt="hero banner" class="w-100">
+                        <p id="services"></p>
                     </figure>
+
 
                 </div>
             </section>
@@ -205,7 +329,7 @@
                 <div class="container">
                     <p class="section-subtitle">Top destination</p>
 
-                    <h2 class="h2 title section-title">Explore Top Destination</h2>
+                    <h2 class="h2 title section-title" id="pricing">Explore Top Destination</h2>
 
                     <ul class="desti-list">
 
@@ -626,7 +750,7 @@
                             </li>
 
                             <li>
-                                <a href="#" class="footer-link">About Us</a>
+                                <a href="#" class="footer-link" id="about">About Us</a>
                             </li>
 
                             <li>
@@ -682,7 +806,7 @@
                             </li>
 
                             <li>
-                                <a href="#" class="footer-link">Contact Us</a>
+                                <a href="#" class="footer-link" id="contact">Contact Us</a>
                             </li>
 
                             <li>
