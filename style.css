@@ -481,13 +481,33 @@ body.nav-active {
   z-index: 1000;
 }
 
+@keyframes popupSlideIn {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .popup-content {
-  background-color: white;
+  /* background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+  background-color: rgba(255, 255, 255, 0.7); /* Adjust opacity for transparency */
+  backdrop-filter: blur(10px); /* Apply blur effect */
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
   padding: 20px;
   border-radius: 10px;
   width: 90%;
   max-width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: popupSlideIn 0.5s ease; /* Apply the animation */
 }
 
 .popup .close {
