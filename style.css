@@ -432,7 +432,7 @@ body.nav-active {
 .header-action {
   margin-top: -50px;
   margin-block-start: auto;
-  margin-block-end: 20px;
+  margin-block-end: 30px;
   padding-block-start: 20px;
   border-block-start: 1px solid var(--border-gainsboro);
   display: flex;
@@ -622,6 +622,7 @@ form button:hover {
       font-size: var(--fontSize-7);
       padding: 10px 12px;
   }
+
 }
 
 /*-----------------------------------*\
@@ -952,11 +953,13 @@ form button:hover {
     margin-right: 5%; /* Maintain proportionality */
     padding-inline: 8px; /* Adjust padding for smaller screens */
   }
+
+
 }
 
 
 
-@media (min-width: 575px) {
+@media (min-width: 576px) {
   /* REUSED STYLE */
   .container {
     max-width: 540px;
